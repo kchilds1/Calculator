@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header/header";
+import Footer from "./components/Footer/footer";
+import Wrapper from "./components/Wrapper/wrapper";
+import Screen from "./components/Screen/Screen";
+import ButtonBox from "./components/ButtonBox/ButtonBox";
+import Button from "./components/Button/Button";
+
+//values to be flatten nested arrays and mapped on the ButtonBox by index
+const btnValues = [
+  ["C", "+-", "%", "/"],
+  [7, 8, 9, "X"],
+  [4, 5, 6, "-"],
+  [1, 2, 3, "+"],
+  [0, ".", "="],
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Wrapper>
+        <Screen value="0" />
+        <ButtonBox>
+          {/* flatten nested arrays for btnValues and mapping them by index */}
+          {btnValues.flat().map((btn, i) => {
+            return (
+              <Button
+                key={i}
+                // if button is = the css class name is equals.  If not = there isn't a css class assigned
+                className={btn === "=" ? "equals" : ""}
+                value={btn}
+                onClick={() => {
+                  console.log(`${btn} clicked!`);
+                }}
+              />
+            );
+          })}
+        </ButtonBox>
+      </Wrapper>
+      <Footer />
+    </>
   );
 }
 
