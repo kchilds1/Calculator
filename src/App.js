@@ -22,7 +22,7 @@ function App() {
     num: 0,
     res: 0,
   })
-
+//function is called when element is a number 0-9
   const numClickHandler = (e) => {
     //prevent the default action of clicking an HTML element from happening
         e.preventDefault();
@@ -47,7 +47,16 @@ function App() {
           });
         }
       };
-  
+      
+//function is called when a decimal is pressed  
+  const decimalClickHandler = (e) =>{
+    e.preventDefault();
+    const value = e.target.innerHTML;
+    setCalc({
+      ...calc,
+      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
+    })
+  }    
   return (
     <>
       <Header />
@@ -75,7 +84,7 @@ function App() {
                    : btn === "/" || btn === "X" || btn === "-" || btn === "+"
                    ? signClickHandler
                    : btn === "."
-                   ? commaClickHandler
+                   ? decimalClickHandler
                   : numClickHandler
                 }
               />
