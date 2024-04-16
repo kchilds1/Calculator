@@ -47,16 +47,71 @@ function App() {
           });
         }
       };
-      
+
 //function is called when a decimal is pressed  
   const decimalClickHandler = (e) =>{
     e.preventDefault();
     const value = e.target.innerHTML;
     setCalc({
       ...calc,
+      /* !calc.num.toString().includes(".") checks to see if the current number stored
+       in calc.num already has a decimal. If it already contains a decimal calc.num will return unchanged*/
       num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
-    })
-  }    
+    });
+  }; 
+  
+  const equalsClickHandler = () => {
+    //if I have a sign and a number we will do the math with a function I call math
+     if (calc.sign && calc.num){
+         const math = (a,b, sign) =>
+         sign === "+"
+         ? a + b
+         : sign === "-"
+         ? a - b
+         : sign === "X"
+         ? a * b
+         : a / b;
+//setCalc is going to update the calc state
+         setCalc({
+          //creating a new object with a span of the current calc object
+          ...calc,
+          //update res property
+          res: 
+          //if calc.num is 0 and calc.sign is / say can't divide with 0
+          calc.num === "0" && calc.sign === "/"
+          ? "Can't divide with 0"
+          //else call the math function that uses Number method to turns the current calc.res and calc.num string into a number
+          : math(Number(calc.res), Number(calc.num), calc.sign),
+          //set sign to an empty string
+          sign: "",
+          //set num to zero
+          num: 0,
+         })
+     }
+  }
+//the invert click handler function will check to see if there are any entered value num or value res, then invert them by multiplying them with -1
+//sign property will initialized  with an empty string
+  const invertClickHandler = () => {
+    setCalc({
+      ...calc,
+      num: calc.num ? calc.num * -1 : 0,
+      res: calc.res ? calc.res * -1 : 0,
+      sign: "",
+    });
+  }
+  const 
+//function is called when a sign (+,-,*, or /) is pressed.
+const signClickHandler = (e) => {
+  e.preventDefault();
+  const value = e.target.innerHTML;
+
+  setCalc({
+    ...calc,
+    sign: value,
+    res: !calc.res && calc.num ? calc.num : calc.res,
+    num: 0,
+    
+  })
   return (
     <>
       <Header />
@@ -73,18 +128,25 @@ function App() {
                 className={btn === "=" ? "equals" : ""}
                 value={btn}
                 onClick={
+                  // if button is C reset click handler will be called
                    btn === "C"
                    ? resetClickHandler
+                   //else button is +- invert click handler will be called
                    : btn === "+-"
                    ? invertClickHandler
+                   //else button is % percent click handler will be called
                    : btn === "%"
                    ? percentClickHandler
+                   //else button is = equals click handler will be called
                    : btn === "="
                    ? equalsClickHandler
+                   //else button is /, X, -, or + sign click handler will be called
                    : btn === "/" || btn === "X" || btn === "-" || btn === "+"
                    ? signClickHandler
+                   //else button is . decimal click handler will be called
                    : btn === "."
                    ? decimalClickHandler
+                   //else num click handler will be called
                   : numClickHandler
                 }
               />
@@ -96,5 +158,6 @@ function App() {
     </>
   );
 }
-
+}
 export default App;
+
