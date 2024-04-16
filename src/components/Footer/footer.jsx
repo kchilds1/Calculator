@@ -4,7 +4,7 @@
   export default function Footer(){
      return (
          <div>
-            <a href="https://kenneth-website.vercel.app"><button>PORTFOLIO</button></a>
+            <a href="https://kenneth-website.vercel.app/projects"><button>PORTFOLIO</button></a>
          </div>
      );
  }
