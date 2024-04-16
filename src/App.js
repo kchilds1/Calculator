@@ -99,7 +99,7 @@ function App() {
       sign: "",
     });
   }
-  const 
+  
 //function is called when a sign (+,-,*, or /) is pressed.
 const signClickHandler = (e) => {
   e.preventDefault();
