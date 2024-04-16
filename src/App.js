@@ -99,7 +99,29 @@ function App() {
       sign: "",
     });
   }
-  
+  //calculate the percentage
+  const percentClickHandler = () => {
+    //if there is a calc.num I will turn it into a number with parseFloat. Else set num to 0
+ let num = calc.num ? parseFloat(calc.num) : 0;
+ //if there is a calc.res I will turn it into a number with parseFloat. Else set res to 0
+ let res = calc.res ? parseFloat(calc.res) : 0;
+// use setCalc function to spread the current calc spread and override the num, res properties, and set the sign property to an empty string
+ setCalc({
+  ...calc,
+  num: (num /= Math.pow(100, 1)),
+  res: (res /= Math.pow(100, 1)),
+  sign: "",
+ })
+  }
+//this is called when I need to reset calc to the state it was when it was first rendered
+  const resetClickHandler = () => {
+    setCalc ({
+      ...calc,
+      sign: "",
+      num: 0,
+      res: 0,
+    })
+  }
 //function is called when a sign (+,-,*, or /) is pressed.
 const signClickHandler = (e) => {
   e.preventDefault();
