@@ -15,6 +15,11 @@ const btnValues = [
   [0, ".", "="],
 ];
 
+const toLocaleString = (num) =>
+  String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
+const removeSpaces = (num) => num.toString().replace(/\s/g, "");
+
 function App() {
   let [calc, setCalc] = useState({
     // default setting below
@@ -29,18 +34,18 @@ function App() {
     //get the inner html number of the clicked button
     const value = e.target.innerHTML;
     //Making sure there are no more that 15 numbers being put in at a time on the screen
-    if (calc.num.length < 16) {
+    if (removeSpaces(calc.num).length < 16) {
       setCalc({
         ...calc,
         num:
           calc.num === 0 && value === "0"
             ? "0"
             : //check to see if we have a whole number for calc.num
-            calc.num % 1 === 0
+             removeSpaces(calc.num) % 1 === 0
             ? //If we have a whole number we will convert it to a number
-              Number(calc.num + value)
+            toLocaleString(Number(removeSpaces(calc.num + value)))
             : //concatenate the numbers
-              calc.num + value,
+            toLocaleString(calc.num + value),
         //If there isn't a math operation set the result to 0, else keep it unchanged
         res: !calc.sign ? 0 : calc.res,
       });
@@ -79,8 +84,13 @@ function App() {
           //if calc.num is 0 and calc.sign is / say can't divide with 0
           calc.num === "0" && calc.sign === "/"
             ? "Can't divide with 0"
-            : //else call the math function that uses Number method to turns the current calc.res and calc.num string into a number
-              math(Number(calc.res), Number(calc.num), calc.sign),
+            : toLocaleString(
+              math(
+                Number(removeSpaces(calc.res)),
+                Number(removeSpaces(calc.num)),
+                calc.sign
+              )
+            ),
         //set sign to an empty string
         sign: "",
         //set num to zero
@@ -93,17 +103,17 @@ function App() {
   const invertClickHandler = () => {
     setCalc({
       ...calc,
-      num: calc.num ? calc.num * -1 : 0,
-      res: calc.res ? calc.res * -1 : 0,
+      num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
+      res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
       sign: "",
     });
   };
   //calculate the percentage
   const percentClickHandler = () => {
     //if there is a calc.num I will turn it into a number with parseFloat. Else set num to 0
-    let num = calc.num ? parseFloat(calc.num) : 0;
+    let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
     //if there is a calc.res I will turn it into a number with parseFloat. Else set res to 0
-    let res = calc.res ? parseFloat(calc.res) : 0;
+    let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
     // use setCalc function to spread the current calc spread and override the num, res properties, and set the sign property to an empty string
     setCalc({
       ...calc,
